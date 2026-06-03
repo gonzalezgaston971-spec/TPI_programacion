@@ -1,83 +1,136 @@
+import csv
+def crear_archivo():
+    try:
+        with open("paises.csv", mode="r", encoding="utf-8"):
+            pass
+    except FileNotFoundError:
+        print("El archivo no existe, se va a crear...")
+        with open("paises.csv", mode="w", newline="", encoding="utf-8") as archivo:
+            escritor = csv.writer(archivo)
+            escritor.writerow(["Pais", "Poblacion","superficie","Continente"])
+
+def cargar_datos():
+    paises = []
+
+    with open("paises.csv", mode="r", encoding="utf-8") as archivo:
+        lector = csv.DictReader(archivo)
+
+        for fila in lector:
+            paises.append(fila)
+
+    return paises
+
+def guardar_datos(paises):
+    with open("paises.csv", mode="w", newline="", encoding="utf-8") as archivo:
+        campos = ["Pais", "Poblacion","Superficie","Continente"]
+        escritor = csv.DictWriter(archivo, fieldnames=campos)
+
+        escritor.writeheader()
+        escritor.writerows(paises)
+
 def desea_continuar():
     print("Tuvo demasiados errores consecutivos.")
     while True:
         try:
-            desea_continuar = input("¿Desea continuar con la carga de datos?(si/no)").lower().strip()
-            if not desea_continuar in ("si","no"):
+            continuar = input("¿Desea continuar con la carga de datos?(si/no): ").lower().strip()
+            if not continuar in ("si","no"):
                 raise ValueError("solo puede ingresar si o no")
-            break
+            return continuar
         except ValueError as e:
             print("ERROR",e)
-        return desea_continuar
-    
+        
 def validar_continente():
-    error = 0
-    while error < 3:
-        try:
-            continente=input("Ingrese aqui el continente del pais: ").strip().capitalize()
-            if continente == "":
-                error += 1
-                raise ValueError("El nombre del continente no puede estar vacio")
+    intentos = 0
+
+    while intentos < 3:
+        continente = input("Ingrese el continente: ").strip().capitalize()
+
+        if continente == "":
+            print(" No puede estar vacío")
+            intentos += 1
+        else:
             return continente
-        except ValueError as e:
-            print("ERROR:",e)
-            if error == 3:
-                    continuar = desea_continuar()
-                    if continuar == "si":
-                        error = 0
-                    else:
-                        return 
+
+        if intentos == 3:
+            if desea_continuar() == "si":
+                intentos = 0
+            else:
+                return None
     
 def validar_superficie():
-    error = 0
-    while error < 3:
-        try:
-            superficie = int(input("Ingrese aqui la superficie del pais en km2: "))
-            if superficie < 1:
-                raise ValueError("la superficie no puede ser menor a 1")
-            return superficie
-        except ValueError as e:
-            print("ERROR:",e)
-            if error == 3:
-                    continuar = desea_continuar()
-                    if continuar == "si":
-                        error = 0
-                    else:
-                        return 
-def validar_poblacion():
-    error = 0
-    while error < 3:
-        try:
-            poblacion = int(input("ingrese la poblacion del pais: "))
-            if poblacion < 0:
-                raise ValueError("No puede ingresar numeros menores a 0")
-            return poblacion 
-        except ValueError as e:
-            print("ERROR:",e)
-            if error == 3:
-                    continuar = desea_continuar()
-                    if continuar == "si":
-                        error = 0
-                    else:
-                        return 
+    intentos = 0
 
-def validar_pais_vacio():
-    error = 0
-    while error < 3:
+    while intentos < 3:
         try:
-            pais=input("Ingrese aqui su pais: ").strip().capitalize()
-            if pais == "":
-                error += 1
-                raise ValueError("El nombre del pais no puede estar vacio")
+            superficie = int(input("Ingrese superficie (km2): "))
+
+            if superficie < 1:
+                print("Debe ser mayor a 0")
+                intentos += 1
+                continue
+
+            return superficie
+
+        except ValueError:
+            print("Solo números enteros")
+            intentos += 1
+
+        if intentos == 3:
+            if desea_continuar() == "si":
+                intentos = 0
+            else:
+                return None
+            
+def validar_poblacion():
+    intentos = 0
+
+    while intentos < 3:
+        try:
+            poblacion = int(input("Ingrese la población del país: "))
+
+            if poblacion < 0:
+                print(" No se permiten números negativos")
+                intentos += 1
+                continue
+
+            return poblacion
+
+        except ValueError:
+            print(" Solo se permiten números enteros")
+            intentos += 1
+
+        if intentos == 3:
+            continuar = desea_continuar().lower()
+
+            if continuar == "si":
+                intentos = 0
+            elif continuar == "no":
+                return None
+
+def validar_pais(paises):
+    intentos = 0
+    while intentos < 3:
+        pais = input("Ingrese país: ").strip().title()
+        if pais == "":
+            print("No puede estar vacío")
+            intentos += 1
+            continue
+        existe = False
+        for p in paises:
+            if p["Pais"].lower() == pais.lower():
+                existe = True
+                break
+        if existe:
+            print("País ya existe")
+            intentos += 1
+        else:
             return pais
-        except ValueError as e:
-            print("ERROR:",e)
-            if error == 3:
-                    continuar = desea_continuar()
-                    if continuar == "si":
-                        error = 0
-                    else:
-                        return 
+
+        if intentos == 3:
+            if desea_continuar() == "si":
+                intentos = 0
+            else:
+                return None 
                         
 def menu_principal():
     print("""
@@ -96,3 +149,32 @@ def menu_principal():
     print("")
     print("="*40)
     return opcion
+
+def agregar_pais(paises):
+
+    with open("paises.csv", mode="a", newline="", encoding="utf-8") as archivo:
+        escritor = csv.writer(archivo)
+
+        pais = validar_pais(paises)
+        if pais == None:
+            return
+        poblacion = validar_poblacion()
+        if poblacion == None:
+            return
+        superficie = validar_superficie()
+        if superficie == None:
+            return
+        continente = validar_continente()
+        if continente == None:
+            return
+        nuevo_pais = {
+            "Pais": pais,
+            "Poblacion":poblacion,
+            "Superficie":superficie,
+            "Continente":continente
+        }
+        paises.append(nuevo_pais)
+
+        escritor.writerow([pais, poblacion, superficie, continente ])
+        print("¡País agregado correctamente!")
+    return paises
