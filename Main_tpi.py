@@ -1,7 +1,7 @@
 from Funciones import *
 #Llamamos todas las funciones existentes en el archivo de funciones a la rama principal
-
 while True:
+    #Aqui se imprime un menu simple dentro de un bucle para que se cierre cuado el usuario lo desee
     opcion = menu_principal()
     match opcion:
         case "1" | "uno":
