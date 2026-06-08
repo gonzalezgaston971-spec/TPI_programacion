@@ -38,25 +38,62 @@ def desea_continuar():
             return continuar
         except ValueError as e:
             print("ERROR",e)
-        
+
+
 def validar_continente():
     intentos = 0
-
+    
     while intentos < 3:
-        continente = input("Ingrese el continente: ").strip().capitalize()
-
+        print("""
+        1. America del Norte
+        2. America del Sur
+        3. America Central
+        4. Asia
+        5. Africa
+        6. Antartida
+        7. Europa
+        8. Oceania
+        """)
+        continente = input("Ingrese el continente: ").strip()
+        
         if continente == "":
-            print(" No puede estar vacío")
+            print("No puede estar vacío.")
             intentos += 1
+        elif continente.isdigit():
+            # El input es un string, así que evaluamos strings ("1", "2") en lugar de enteros (1, 2)
+            match continente:
+                case "1":
+                    return "America del Norte"
+                case "2":
+                    return "America del Sur"
+                case "3":
+                    return "America Central"
+                case "4":
+                    return "Asia"
+                case "5":
+                    return "Africa"
+                case "6":
+                    return "Antartida"
+                case "7":
+                    return "Europa"
+                case "8":
+                    return "Oceania"
+                case _:
+                    # Caso default por si ingresan un número que no está en la lista (ej: "8")
+                    print("Opción inválida. Ingrese un número del 1 al 7.")
+                    intentos += 1
         else:
-            return continente
+            # Por si el usuario ingresa letras o caracteres especiales
+            print("Entrada inválida. Debe ingresar un número.")
+            intentos += 1
 
         if intentos == 3:
             if desea_continuar() == "si":
                 intentos = 0
             else:
                 return None
-    
+
+
 def validar_superficie():
     intentos = 0
 
