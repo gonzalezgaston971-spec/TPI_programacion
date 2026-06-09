@@ -14,9 +14,9 @@ while True:
         case "2" | "dos":
             actualizar_poblacion_superficie(paises)
         case "3" | "tres":
-            pass
+            buscar_pais(paises)
         case "4" | "cuatro":
-            pass
+            filtrar_paises(paises)
         case "5" | "cinco":
             pass
         case "6" | "seis":
