@@ -12,15 +12,15 @@ while True:
         case "1" | "uno":
             agregar_pais(paises)
         case "2" | "dos":
-            pass
+            actualizar_poblacion_superficie(paises)
         case "3" | "tres":
-            pass
+            buscar_pais(paises)
         case "4" | "cuatro":
-            pass
+            filtrar_paises(paises)
         case "5" | "cinco":
-            pass
+            ordenar_paises(paises)
         case "6" | "seis":
-            pass
+            mostrar_estadisticas(paises)
         case "7" | "siete":
             print("Cerrando menu, Esperamos fuera de su agrado")
             print("¡Adios!")
