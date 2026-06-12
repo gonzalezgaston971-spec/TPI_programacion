@@ -18,9 +18,9 @@ while True:
         case "4" | "cuatro":
             filtrar_paises(paises)
         case "5" | "cinco":
-            pass
+            ordenar_paises(paises)
         case "6" | "seis":
-            pass
+            mostrar_estadisticas(paises)
         case "7" | "siete":
             print("Cerrando menu, Esperamos fuera de su agrado")
             print("¡Adios!")

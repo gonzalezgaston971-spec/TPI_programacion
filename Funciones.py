@@ -91,10 +91,10 @@ def validar_continente():
                     print("Opción inválida. Ingrese un número del 1 al 7.")
                     intentos += 1
         else:
-            return continente
-            # Por si el usuario ingresa letras o caracteres especiales
             print("Entrada inválida. Debe ingresar un número.")
             intentos += 1
+            return continente
+            # Por si el usuario ingresa letras o caracteres especiales
 
         if intentos == 3:
             if desea_continuar() == "si":
@@ -374,7 +374,7 @@ def filtrar_paises(paises):
                     superficie_maxima = validar_superficie()
                     if superficie_maxima == None:
                         break
-                    if superficie_maxima <= poblacion_minima:
+                    if superficie_maxima <= superficie_minima:
                         print("El rango de superficie maximo no puede ser menor o igual al rango minimo")
                     break
                 if superficie_maxima == None:
@@ -383,7 +383,7 @@ def filtrar_paises(paises):
                 print("="*8, "PAISES DENTRO DEL RANGO INGRESADO", "="*8)
                 print("")
                 for pais in paises:
-                    if poblacion_minima <= pais["Superficie"] and pais["Superficie"] <= poblacion_maxima:
+                    if superficie_minima <= pais["Superficie"] and pais["Superficie"] <= superficie_maxima:
                         print(f'Pais: {pais["Pais"]} | Poblacion: {pais["Poblacion"]} | Superficie: {pais["Superficie"]} | Continente: {pais["Continente"]}')
                         encontrado = True
                 print("")
@@ -396,3 +396,89 @@ def filtrar_paises(paises):
             case _:
                 print("Ingrese una opcion del menu 'FILTROS DISPONIBLES' por favor")
         
+def ordenar_paises(paises):
+    if not paises:
+        print("Todavía no se ingresaron países, pero puede hacerlo en la opción número 1 del menú")
+        return
+
+    print("="*8, "OPCIONES DE ORDENAMIENTO", "="*8)
+    print("""
+1. Ordenar por Nombre
+2. Ordenar por Población
+3. Ordenar por Superficie
+4. Volver al menú principal""")
+    
+    opcion = input("Ingrese su opción: ").strip()
+    
+    if opcion == "4":
+        print("Volviendo al menú principal")
+        return
+    elif opcion not in ("1", "2", "3"):
+        print("Opción inválida. Volviendo al menú principal.")
+        return
+
+    print("""
+Como desea ordenar:
+1. Ascendente (Menor a Mayor / A-Z)
+2. Descendente (Mayor a Menor / Z-A)""")
+    
+    sentido = input("Ingrese su opción: ").strip()
+    if sentido == "1":
+        reversa = False
+    elif sentido == "2":
+        reversa = True
+    else:
+        print("Opción inválida. Se ordenará de forma ascendente por defecto.")
+        reversa = False
+
+    # Definimos la clave de ordenamiento según la opción
+    match opcion:
+        case "1":
+            # Pasamos a .lower() para que no priorice mayúsculas sobre minúsculas en el orden alfabético
+            paises_ordenados = sorted(paises, key=lambda x: x["Pais"].lower(), reverse=reversa)
+            criterio = "Nombre"
+        case "2":
+            paises_ordenados = sorted(paises, key=lambda x: x["Poblacion"], reverse=reversa)
+            criterio = "Población"
+        case "3":
+            paises_ordenados = sorted(paises, key=lambda x: x["Superficie"], reverse=reversa)
+            criterio = "Superficie"
+
+    print("\n" + "="*8, f"LISTA ORDENADA POR {criterio.upper()}", "="*8)
+    for pais in paises_ordenados:
+        print(f'País: {pais["Pais"]} | Población: {pais["Poblacion"]} | Superficie: {pais["Superficie"]} | Continente: {pais["Continente"]}')
+    print("="*40)
+
+def mostrar_estadisticas(paises):
+    if not paises:
+        print("Todavía no se ingresaron países, pero puede hacerlo en la opción número 1 del menú")
+        return
+
+    cantidad = len(paises)
+    
+    # 1. Cálculos de Población
+    poblacion_total = sum(p["Poblacion"] for p in paises)
+    poblacion_promedio = poblacion_total / cantidad
+    pais_mas_poblado = max(paises, key=lambda x: x["Poblacion"])
+    pais_menos_poblado = min(paises, key=lambda x: x["Poblacion"])
+
+    # 2. Cálculos de Superficie
+    superficie_total = sum(p["Superficie"] for p in paises)
+    superficie_promedio = superficie_total / cantidad
+    pais_mayor_superficie = max(paises, key=lambda x: x["Superficie"])
+    pais_menor_superficie = min(paises, key=lambda x: x["Superficie"])
+
+    # 3. Mostrar reportes en pantalla
+    print("="*12, "ESTADÍSTICAS GENERALES", "="*12)
+    print(f"Cantidad de países registrados: {cantidad}")
+    print("-"*46)
+    print(f"Población Total: {poblacion_total} hab.")
+    print(f"Población Promedio: {poblacion_promedio:.2f} hab. por país")
+    print(f"País más poblado: {pais_mas_poblado['Pais']} ({pais_mas_poblado['Poblacion']} hab.)")
+    print(f"País menos poblado: {pais_menos_poblado['Pais']} ({pais_menos_poblado['Poblacion']} hab.)")
+    print("-"*46)
+    print(f"Superficie Total: {superficie_total} km²")
+    print(f"Superficie Promedio: {superficie_promedio:.2f} km² por país")
+    print(f"País con mayor superficie: {pais_mayor_superficie['Pais']} ({pais_mayor_superficie['Superficie']} km²)")
+    print(f"País con menor superficie: {pais_menor_superficie['Pais']} ({pais_menor_superficie['Superficie']} km²)")
+    print("="*46)
