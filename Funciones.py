@@ -323,6 +323,7 @@ def filtrar_paises(paises):
 2. Filtrar por rango de poblacion
 3. Filtrar por rango de superficie
 4. Volver al menu principal""")
+        print("="*40)
         opcion = input("ingrese su opcion:")
         match opcion:
             case "1":
