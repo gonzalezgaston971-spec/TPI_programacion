@@ -20,7 +20,7 @@ def cargar_datos():
                 fila["Poblacion"] = int(fila["Poblacion"])
                 fila["Superficie"] = int(fila["Superficie"])
             except ValueError:
-                print(f"⚠️ Error en datos de: {fila}")
+                print(f"Error en datos de: {fila}")
                 continue
 
             paises.append(fila)
@@ -51,7 +51,7 @@ def validar_continente():
 
     
     while intentos < 3:
-
+        print("Ingrese el continente:")
         print("""
         1. America del Norte
         2. America del Sur
@@ -68,7 +68,6 @@ def validar_continente():
             print("No puede estar vacío.")
             intentos += 1
         elif continente.isdigit():
-            # El input es un string, así que evaluamos strings ("1", "2") en lugar de enteros (1, 2)
             match continente:
                 case "1":
                     return "America del Norte"
@@ -91,9 +90,8 @@ def validar_continente():
                     print("Opción inválida. Ingrese un número del 1 al 7.")
                     intentos += 1
         else:
-            print("Entrada inválida. Debe ingresar un número.")
+            print("\nEntrada inválida. Debe ingresar un número.")
             intentos += 1
-            return continente
             # Por si el usuario ingresa letras o caracteres especiales
 
         if intentos == 3:
@@ -154,12 +152,15 @@ def validar_poblacion():
 
 def validar_pais_carga(paises):
     intentos = 0
-
     while intentos < 3:
+        
         pais = input("Ingrese el nombre del país: ").strip().title()
 
         if pais == "":
             print("El nombre no puede estar vacío")
+            intentos += 1
+        elif pais.isdigit():
+            print("El nombre del País no puede contener numeros")
             intentos += 1
 
         else:
@@ -232,37 +233,39 @@ def agregar_pais(paises):
         if intento == 3:
             continuar = desea_continuar()
             if continuar == "si":
-                intento == 0
+                intento = 0  
             else:
                 print("volviendo al menu principal")
                 return
 
-    with open("paises.csv", mode="a", newline="", encoding="utf-8") as archivo:
-        escritor = csv.writer(archivo)
-        for _ in range(cantidad_a_cargar):
-            pais = validar_pais_carga(paises)
-            if pais == None:
-                print("Volviendo al menu principal")
-                return
-            poblacion = validar_poblacion()
-            if poblacion == None:
-                return
-            superficie = validar_superficie()
-            if superficie == None:
-                return
-            continente = validar_continente()
-            if continente == None:
-                return
-            nuevo_pais = {
-                "Pais": pais,
-                "Poblacion":poblacion,
-                "Superficie":superficie,
-                "Continente":continente
-            }
-            paises.append(nuevo_pais)
+    # Procesamos la carga de datos en la lista 'paises'
+    for _ in range(cantidad_a_cargar):
+        pais = validar_pais_carga(paises)
+        if pais == None:
+            print("Volviendo al menu principal")
+            return
+        poblacion = validar_poblacion()
+        if poblacion == None:
+            return
+        superficie = validar_superficie()
+        if superficie == None:
+            return
+        continente = validar_continente()
+        if continente == None:
+            return
+        
+        nuevo_pais = {
+            "Pais": pais,
+            "Poblacion": poblacion,
+            "Superficie": superficie,
+            "Continente": continente
+        }
+        paises.append(nuevo_pais)
+        print(f"¡{pais} preparado para guardar!")
 
-            escritor.writerow([pais, poblacion, superficie, continente ])
-            print("¡País agregado correctamente!")
+    # Al terminar el bucle, guardamos toda la lista actualizada de forma limpia en el CSV
+    guardar_datos(paises)
+    print("\n¡Todos los países se han guardado correctamente en el archivo!")
     return paises
 
 def actualizar_poblacion_superficie(paises):
@@ -317,13 +320,13 @@ def filtrar_paises(paises):
         print("Todavia no se ingresaron paises, pero puede hacerlo en la opcion numero 1 del menu")
         return
     while True:
-        print("="*8,"FILTROS DISPONIBLES","="*8)
+        print("="*9,"FILTROS DISPONIBLES","="*9)
+        print("="*40)
         print("""
 1. Filtrar por continente
 2. Filtrar por rango de poblacion
 3. Filtrar por rango de superficie
 4. Volver al menu principal""")
-        print("="*40)
         opcion = input("ingrese su opcion:")
         match opcion:
             case "1":
@@ -331,66 +334,101 @@ def filtrar_paises(paises):
                 if continente == None:
                     continue
                 encontrado = False
-                print("=")
+                print("="*40)
                 for pais in paises:
                     if continente in pais["Continente"]:
                         print(f'Pais: {pais["Pais"]} | Poblacion: {pais["Poblacion"]} | Superficie: {pais["Superficie"]} | Continente: {pais["Continente"]}')
                         encontrado = True
+                print("="*40)
                 if not encontrado:
                     print("No hay paises cargados en ese continente")
                     continue
             case "2":
-                print("Ingrese el rango minimo de poblacion")
+                print("--- FILTRO POR POBLACIÓN ---")
+                print("Ingrese el rango mínimo de población")
                 poblacion_minima = validar_poblacion()
                 if poblacion_minima == None:
                     continue
-                while True:
-                    print("Ingrese el rango maximo de poblacion")
+                
+                intentos = 0
+                rango_valido = False
+                
+                while intentos < 3:
+                    print("Ingrese el rango máximo de población")
                     poblacion_maxima = validar_poblacion()
+                    
                     if poblacion_maxima == None:
+                        # Si canceló dentro de validar_poblacion, salimos del filtro
                         break
+                    
                     if poblacion_maxima <= poblacion_minima:
-                        print("El rango de poblacion maximo no puede ser menor o igual al rango minimo")
-                    break
-                if poblacion_maxima == None:
-                    continue
+                        print("❌ El rango de población máximo no puede ser menor o igual al rango mínimo.")
+                        intentos += 1
+                    else:
+                        rango_valido = True
+                        break
+                        
+                    if intentos == 3:
+                        if desea_continuar() == "si":
+                            intentos = 0
+                        else:
+                            break 
+                
+                if not rango_valido:
+                    continue 
+                
                 encontrado = False
-                print("="*8, "PAISES DENTRO DEL RANGO INGRESADO", "="*8)
-                print("")
+                print("\n" + "="*8, "PAISES DENTRO DEL RANGO INGRESADO", "="*8)
                 for pais in paises:
                     if poblacion_minima <= pais["Poblacion"] and pais["Poblacion"] <= poblacion_maxima:
                         print(f'Pais: {pais["Pais"]} | Poblacion: {pais["Poblacion"]} | Superficie: {pais["Superficie"]} | Continente: {pais["Continente"]}')
                         encontrado = True
-                print("")
                 if not encontrado:
-                    print("no se encontraron paises en ese rango de poblacion")
-                    continue 
+                    print("No se encontraron países en ese rango de población")
+                print("="*40 + "\n")
+            
             case "3":
-                print("Ingrese la superficie minima de busqueda")
+                print("--- FILTRO POR SUPERFICIE ---")
+                print("Ingrese la superficie mínima de búsqueda")
                 superficie_minima = validar_superficie()
                 if superficie_minima == None:
                     continue
-                while True:
-                    print("Ingrese el rango maximo de superficie")
+                
+                intentos = 0
+                rango_valido = False
+                
+                while intentos < 3:
+                    print("Ingrese el rango máximo de superficie")
                     superficie_maxima = validar_superficie()
+                    
                     if superficie_maxima == None:
                         break
+                    
                     if superficie_maxima <= superficie_minima:
-                        print("El rango de superficie maximo no puede ser menor o igual al rango minimo")
-                    break
-                if superficie_maxima == None:
-                    continue
+                        print("El rango de superficie máximo no puede ser menor o igual al rango mínimo.")
+                        intentos += 1
+                    else:
+                        rango_valido = True
+                        break
+                        
+                    if intentos == 3:
+                        if desea_continuar() == "si":
+                            intentos = 0
+                        else:
+                            break 
+                
+                if not rango_valido:
+                    continue 
+                
                 encontrado = False
-                print("="*8, "PAISES DENTRO DEL RANGO INGRESADO", "="*8)
-                print("")
+                print("\n" + "="*8, "PAISES DENTRO DEL RANGO INGRESADO", "="*8)
                 for pais in paises:
                     if superficie_minima <= pais["Superficie"] and pais["Superficie"] <= superficie_maxima:
                         print(f'Pais: {pais["Pais"]} | Poblacion: {pais["Poblacion"]} | Superficie: {pais["Superficie"]} | Continente: {pais["Continente"]}')
                         encontrado = True
-                print("")
                 if not encontrado:
-                    print("no se encontraron paises en ese rango de superficie")
-                    continue 
+                    print("No se encontraron países en ese rango de superficie")
+                print("="*40 + "\n")
             case "4":
                 print("Volviendo al menu principal")
                 return
@@ -469,7 +507,16 @@ def mostrar_estadisticas(paises):
     pais_mayor_superficie = max(paises, key=lambda x: x["Superficie"])
     pais_menor_superficie = min(paises, key=lambda x: x["Superficie"])
 
-    # 3. Mostrar reportes en pantalla
+    # 3. Conteo de países por continente
+    conteo_continentes={}
+    for p in paises:
+        continente = p["Continente"].strip().title()
+        if continente in conteo_continentes:
+            conteo_continentes[continente] += 1
+        else:
+            conteo_continentes[continente] = 1
+
+    # 4. Mostrar reportes en pantalla
     print("="*12, "ESTADÍSTICAS GENERALES", "="*12)
     print(f"Cantidad de países registrados: {cantidad}")
     print("-"*46)
@@ -482,4 +529,9 @@ def mostrar_estadisticas(paises):
     print(f"Superficie Promedio: {superficie_promedio:.2f} km² por país")
     print(f"País con mayor superficie: {pais_mayor_superficie['Pais']} ({pais_mayor_superficie['Superficie']} km²)")
     print(f"País con menor superficie: {pais_menor_superficie['Pais']} ({pais_menor_superficie['Superficie']} km²)")
+    print("="*46)
+
+    print("Cantidad de países por continente:")
+    for continente, cantidad_cont in conteo_continentes.items():
+        print(f" - {continente}: {cantidad_cont}")
     print("="*46)

@@ -1,25 +1,28 @@
 Pais,Poblacion,Superficie,Continente
-Argentina, 46000000, 2780400, America del Sur
-Brasil, 214000000, 8516000, America del Sur
-Canada, 39000000, 9985000, America del Norte
-Mexico, 129000000, 1964000, America del Norte
-Chile, 19000000, 756000, America del Sur
-Francia, 67000000, 551000, Europa
-Alemania, 83000000, 357000, Europa
-España, 48000000, 505000, Europa
-Italia, 59000000, 301000, Europa
-Reino Unido, 67000000, 243000, Europa
-China, 1410000000, 9597000, Asia
-India, 1400000000, 3287000, Asia
-Japón, 125000000, 378000, Asia
-Corea Del Sur, 51000000, 100000, Asia
-Indonesia, 275000000, 1905000, Asia
-Nigeria, 220000000, 923000, Africa
-Egipto, 110000000, 1002000, Africa
-Sudafrica, 60000000, 1221000, Africa
-Kenia, 55000000, 580000, Africa
-Marruecos, 37000000, 446000, Africa
-Australia, 26000000, 7692000, Oceania
-Nueva Zelanda, 5000000, 268000, Oceania
-Fiyi, 900000, 18200, Oceania
-Papua Nueva Guinea, 10000000, 462000, Oceania
+Argentina,10,1000000000000000, America del Sur
+Brasil,214000000,8516000, America del Sur
+Canada,39000000,9985000, America del Norte
+Mexico,129000000,1964000, America Central
+Chile,19000000,756000, America del Sur
+Francia,67000000,551000, Europa
+Alemania,83000000,357000, Europa
+España,48000000,505000, Europa
+Italia,59000000,301000, Europa
+Reino Unido,67000000,243000, Europa
+China,1410000000,9597000, Asia
+India,1400000000,3287000, Asia
+Japón,125000000,378000, Asia
+Corea Del Sur,51000000,100000, Asia
+Indonesia,275000000,1905000, Asia
+Nigeria,220000000,923000, Africa
+Egipto,110000000,1002000, Africa
+Sudafrica,60000000,1221000, Africa
+Kenia,55000000,580000, Africa
+Marruecos,37000000,446000, Africa
+Australia,26000000,7692000, Oceania
+Nueva Zelanda,5000000,268000, Oceania
+Fiyi,900000,18200, Oceania
+Papua Nueva Guinea,10000000,462000, Oceania
+Argelia,48000000,2381740,Africa
+Rusia,146000000,17098250,Asia
+A,200,20000000000,America del Norte
