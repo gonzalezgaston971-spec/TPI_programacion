@@ -1,32 +1,247 @@
-El programa se encarga de gestionar paises dentro de un archivo .CSV para manipular esta informacion con las fuciones definidas dentro del programa
-en caso de que no exista el archivo CSV paises se creara uno una vez ejecute el programa para su correcto funcionamiento
-las cuales son:
-1. Agregar paises:
-esta funcion permitira al usuario ingresar paises en la cantidad y las veces que desee, siempre que estos no existan ya dentro del archivo
-o tengan datos invalidos que no permitan la carga de los paises como por ejemplo:
-numeros cuando se piden nombres, o no ingresar un numero cuando se lo pide, o que algun dato quede vacio y no permita su correcta carga
-en caso de tener errores reiterativos se le permitira salir en cualquier momento luego de preguntarle si lo desea
-una vez finalizada la carga se guardaran los datos en el archivo 1 pais a la vez
-2. Actualizar poblacion y superficie:
-aqui se le pedira el nombre de un pais el cual debe existir en el archivo CSV para su correcta ejecusion y que si el archivo esta vacio no
-podra ejecutarse
-en caso de que se ejecute se le pediran los datos a actualizar, en caso de errores reiterativos se le preguntara si desea salir y cancelar 
-la actualizacion dejando la informacion como estaba y de caso cobtrario se actualizara a la nueva informacion 
-3. Buscar un pais:
-se le pide al usuario el ingreso de un pais o un fregmento del nombre y se le mostrara por consola la busqueda de su pais con todos sus datos
-o los similares a su busqueda 
-en caso de no encontrar el pais buscado se le informara al usuario 
-4. Filtrar paises
-  se mostraran los paises por consola de acuerdo a lo que el usuario ingrese en el menu el cual persiste hasta que el usuario decida volver al
-menu principal
-ya sea ordenandolos por su continente el cual se le pedira al usuario que ingrese una opcion valida y en caso de errores reiterados se le
-preguntara si desea continuar o con rangos minimos y maximos de poblacion y superficie que delimiten los paises que desea el usuario
+# Sistema de Gestión de Países (CSV)
 
- 5. Ordenar paises
-   
-6. Mostrar estadisticas
-    
-7. salir:
-este menu de opciones persistira hasta que el usuario decida salir del programa con la opcion 7 del menu principal
+## Descripción del programa
+
+Este programa permite gestionar información de países utilizando un archivo **CSV (`paises.csv`)** como almacenamiento persistente.
+
+Al iniciar, el sistema verifica si el archivo existe. En caso contrario, lo crea automáticamente con los encabezados correspondientes para su correcto funcionamiento.
+
+El sistema permite agregar, modificar, buscar, filtrar, ordenar y obtener estadísticas sobre los países cargados.
+
+---
+
+## Funcionalidades principales
+
+### 1. Agregar países
+
+Permite ingresar uno o varios países al sistema.
+
+* Se solicita:
+
+  * Nombre del país
+  * Población
+  * Superficie
+  * Continente
+* Validaciones:
+
+  * No se permiten campos vacíos
+  * No se permiten números en nombres
+  * No se permiten duplicados
+  * Datos numéricos obligatorios donde corresponda
+* En caso de errores repetidos:
+
+  * Se permite cancelar la operación
+* Los datos se guardan en el archivo CSV
+
+---
+
+### 2. Actualizar población y superficie
+
+Permite modificar datos de un país existente.
+
+* Requisitos:
+
+  * Debe haber países cargados
+  * El país debe existir
+* Se actualizan:
+
+  * Población
+  * Superficie
+* Se puede cancelar la operación ante errores
+* Los cambios se guardan automáticamente
+
+---
+
+### 3. Buscar un país
+
+Permite buscar un país por nombre o parte del nombre.
+
+* Muestra:
+
+  * Coincidencias exactas o parciales
+  * Todos los datos del país
+* Si no hay resultados:
+
+  * Se informa al usuario
+
+---
+
+### 4. Filtrar países
+
+Permite visualizar países según distintos criterios.
+
+Opciones disponibles:
+
+* Por continente
+* Por rango de población
+* Por rango de superficie
+
+Características:
+
+* Menú persistente hasta que el usuario decida salir
+* Validación de rangos (mínimo < máximo)
+* Manejo de errores con opción de continuar o cancelar
+
+---
+
+### 5. Ordenar países
+
+Permite ordenar los países según distintos criterios:
+
+* Por nombre
+* Por población
+* Por superficie
+
+Modos:
+
+* Ascendente
+* Descendente
+
+---
+
+### 6. Mostrar estadísticas
+
+Genera un resumen general de los países cargados:
+
+* Cantidad total de países
+* Población:
+
+  * Total
+  * Promedio
+  * País más poblado
+  * País menos poblado
+* Superficie:
+
+  * Total
+  * Promedio
+  * País con mayor superficie
+  * País con menor superficie
+* Cantidad de países por continente
+
+---
+
+### 7. Salir
+
+Finaliza la ejecución del programa.
+
+---
+
+## Instrucciones de uso
+
+1. Ejecutar el programa principal.
+2. Seleccionar una opción del menú.
+3. Ingresar los datos solicitados.
+4. Seguir las validaciones indicadas por el sistema.
+5. Utilizar la opción 7 para salir del programa.
+
+---
+
+## Ejemplos de uso
+
+### Ejemplo 1: Agregar país
+
+```id="39nc7l"
+Ingrese la cantidad de paises a cargar: 1
+Ingrese el nombre del país: Argentina
+Ingrese población: 45000000
+Ingrese superficie (km2): 2780400
+Ingrese el continente: 2
+```
+
+Salida:
+
+```id="wcxksl"
+¡Argentina preparado para guardar!
+¡Todos los países se han guardado correctamente!
+```
+
+---
+
+### Ejemplo 2: Buscar país
+
+```id="6vzv9q"
+Ingrese el nombre del país: Argen
+```
+
+Salida:
+
+```id="y2vn6y"
+Pais: Argentina | Poblacion: 45000000 | Superficie: 2780400 | Continente: America del Sur
+```
+
+---
+
+### Ejemplo 3: Filtro por población
+
+```id="gqg930"
+Ingrese población mínima: 1000000
+Ingrese población máxima: 50000000
+```
+
+---
+
+## Estructura del archivo CSV
+
+El archivo `paises.csv` contiene las siguientes columnas:
+
+* Pais
+* Poblacion
+* Superficie
+* Continente
+
+---
+
+## Integrantes del proyecto
+
+* Integrante 1: Gaston 
+* Integrante 2: Santiago
+
+Nota:
+Las funcionalidades de:
+
+* Agregar paises
+* actualizar poblacion y superficie
+* filtrar paises
+
+fueron desarrolladas principalmente por el primer integrante.
+
+Las funcionalidades de:
+
+* Ordenar países
+* Mostrar estadísticas
+* buscar paises
+
+fueron desarrolladas principalmente por el segundo integrante.
+
+a lo largo del codigo hubo una participacion activa de ambos ya sea en la correccion de codigo y la creacion del mismo
+
+---
+
+## Consideraciones
+
+* El programa utiliza manejo de errores para evitar datos inválidos.
+* Se permite cancelar operaciones ante múltiples errores.
+* Se trabaja con listas de diccionarios para manejar los datos en memoria.
+* El archivo CSV se actualiza automáticamente tras cada modificación.
+
+---
+
+## Tecnologías utilizadas
+
+* Python
+* Módulo `csv`
+* Estructuras de datos (listas y diccionarios)
+
+---
+
+## Estado del proyecto
+
+Funcional y completo
+Validaciones implementadas
+Persistencia de datos en CSV
+
+---
+
+
 
 

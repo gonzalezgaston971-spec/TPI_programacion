@@ -1,5 +1,5 @@
 import csv
-def crear_archivo():
+def crear_archivo(): #Se encarga de crear un archivo paises.CSV en caso de no encontrarlo
     try:
         with open("paises.csv", mode="r", encoding="utf-8"):
             pass
@@ -8,8 +8,8 @@ def crear_archivo():
         with open("paises.csv", mode="w", newline="", encoding="utf-8") as archivo:
             escritor = csv.writer(archivo)
             escritor.writerow(["Pais", "Poblacion","Superficie","Continente"])
-
-def cargar_datos():
+#Intenta abrir el archivo y en caso de que no exista lo crea
+def cargar_datos(): # mete todos los datos del CSV en una lista de diccionarios
     paises = []
 
     with open("paises.csv", mode="r", encoding="utf-8") as archivo:
@@ -27,11 +27,12 @@ def cargar_datos():
 
     return paises
 
-def guardar_datos(paises):
+def guardar_datos(paises): # es la encargada de almacenar en el archivo los cambios realizados
+    #1. Abre el archivo y sus encabezados o campos
     with open("paises.csv", mode="w", newline="", encoding="utf-8") as archivo:
         campos = ["Pais", "Poblacion","Superficie","Continente"]
         escritor = csv.DictWriter(archivo, fieldnames=campos)
-
+    #2 Escribe lo que se encuentre dentro de la lista de diccionarios
         escritor.writeheader()
         escritor.writerows(paises)
 
@@ -362,7 +363,7 @@ def filtrar_paises(paises):
                         break
                     
                     if poblacion_maxima <= poblacion_minima:
-                        print("❌ El rango de población máximo no puede ser menor o igual al rango mínimo.")
+                        print(" El rango de población máximo no puede ser menor o igual al rango mínimo.")
                         intentos += 1
                     else:
                         rango_valido = True
