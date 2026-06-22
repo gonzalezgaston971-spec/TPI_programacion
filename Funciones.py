@@ -160,7 +160,7 @@ def validar_pais_carga(paises):
         if pais == "":
             print("El nombre no puede estar vacío")
             intentos += 1
-        elif pais.isdigit():
+        elif not pais.isalpha():
             print("El nombre del País no puede contener numeros")
             intentos += 1
 

@@ -1,6 +1,5 @@
 from Funciones import *
 #Llamamos todas las funciones existentes en el archivo de funciones a la rama principal
-import csv
 crear_archivo()
 #creamos el archivo en el caso de que no exista
 paises = cargar_datos()
